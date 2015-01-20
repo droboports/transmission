@@ -54,6 +54,7 @@ _is_running() {
 
 start() {
   export TRANSMISSION_WEB_HOME="${prog_dir}/www"
+  export EVENT_NOEPOLL=1
   "${daemon}" -g "${homedir}" -x "${pidfile}" -e "${logfile}"
   sleep 2
   renice "${nicelevel}" $(cat "${pidfile}")
