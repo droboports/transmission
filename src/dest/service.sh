@@ -7,7 +7,7 @@
 
 framework_version="2.1"
 name="transmission"
-version="2.84"
+version="2.84-1"
 description="BitTorrent download manager"
 depends=""
 webui=":9091/transmission/web/"
