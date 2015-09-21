@@ -1,0 +1,17 @@
+/tmp/DroboApps/transmission/log.txt {
+  missingok
+  notifempty
+  size 50k
+  rotate 1
+  su root root
+  copytruncate
+}
+
+/tmp/DroboApps/transmission/transmission.log {
+  missingok
+  notifempty
+  size 50k
+  rotate 1
+  su root root
+  copytruncate
+}

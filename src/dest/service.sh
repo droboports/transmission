@@ -7,10 +7,10 @@
 
 framework_version="2.1"
 name="transmission"
-version="2.84-1"
-description="BitTorrent download manager"
+version="2.84-2"
+description="A fast, easy, and free BitTorrent client"
 depends=""
-webui=":9091/transmission/web/"
+webui="WebUI"
 
 prog_dir="$(dirname "$(realpath "${0}")")"
 daemon="${prog_dir}/bin/transmission-daemon"
@@ -30,8 +30,8 @@ if [ -z "${FRAMEWORK_VERSION:-}" ]; then
 fi
 
 start() {
-  export TRANSMISSION_WEB_HOME="${prog_dir}/www"
-  "${daemon}" -g "${homedir}" -x "${pidfile}" -e "${logfile}"
+  export TRANSMISSION_WEB_HOME="${prog_dir}/app"
+  "${daemon}" --config-dir "${homedir}" --pid-file "${pidfile}" --logfile "${tmp_dir}/${name}.log"
   sleep 1
   renice "${nicelevel}" $(cat "${pidfile}")
 }
@@ -44,7 +44,6 @@ STDERR=">&4"
 echo "$(date +"%Y-%m-%d %H-%M-%S"):" "${0}" "${@}"
 set -o errexit  # exit on uncaught error code
 set -o nounset  # exit on unset variable
-set -o pipefail # propagate last error code on pipe
 set -o xtrace   # enable script tracing
 
 main "${@}"

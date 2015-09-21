@@ -1,0 +1,2 @@
+<p><strong>I have another question about <?php echo $appname; ?>.</strong></p>
+<p>Please visit <a href="https://forum.transmissionbt.com/viewforum.php?f=2" target="_new"><?php echo $appname; ?>&apos;s support forum</a>.</p>

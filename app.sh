@@ -18,7 +18,7 @@ _build_openssl() {
 local VERSION="1.0.2d"
 local FOLDER="openssl-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
-local URL="http://www.openssl.org/source/${FILE}"
+local URL="http://mirror.switch.ch/ftp/mirror/openssl/source/${FILE}"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 cp -vf "src/${FOLDER}-parallel-build.patch" "target/${FOLDER}/"
@@ -26,27 +26,35 @@ pushd "target/${FOLDER}"
 patch -p1 -i "${FOLDER}-parallel-build.patch"
 ./Configure --prefix="${DEPS}" --openssldir="${DEST}/etc/ssl" \
   zlib-dynamic --with-zlib-include="${DEPS}/include" --with-zlib-lib="${DEPS}/lib" \
-  shared threads linux-armv4 -DL_ENDIAN ${CFLAGS} ${LDFLAGS} -Wa,--noexecstack -Wl,-z,noexecstack
+  shared threads linux-armv4 -DL_ENDIAN ${CFLAGS} ${LDFLAGS} \
+  -Wa,--noexecstack -Wl,-z,noexecstack
 sed -i -e "s/-O3//g" Makefile
 make
 make install_sw
-cp -vfaR "${DEPS}/lib"/* "${DEST}/lib/"
-rm -vfr "${DEPS}/lib"
-rm -vf "${DEST}/lib/libcrypto.a" "${DEST}/lib/libssl.a"
-sed -i -e "s|^exec_prefix=.*|exec_prefix=${DEST}|g" "${DEST}/lib/pkgconfig/openssl.pc"
+cp -vfa "${DEPS}/lib/libssl.so"* "${DEST}/lib/"
+cp -vfa "${DEPS}/lib/libcrypto.so"* "${DEST}/lib/"
+cp -vfaR "${DEPS}/lib/engines" "${DEST}/lib/"
+cp -vfaR "${DEPS}/lib/pkgconfig" "${DEST}/lib/"
+rm -vf "${DEPS}/lib/libcrypto.a" "${DEPS}/lib/libssl.a"
+sed -e "s|^libdir=.*|libdir=${DEST}/lib|g" -i "${DEST}/lib/pkgconfig/libcrypto.pc"
+sed -e "s|^libdir=.*|libdir=${DEST}/lib|g" -i "${DEST}/lib/pkgconfig/libssl.pc"
 popd
 }
 
 ### CURL ###
 _build_curl() {
-local VERSION="7.43.0"
+local VERSION="7.44.0"
 local FOLDER="curl-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://curl.haxx.se/download/${FILE}"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-./configure --host="${HOST}" --prefix="${DEPS}" --libdir="${DEST}/lib" --disable-static --disable-debug --disable-curldebug --with-zlib="${DEPS}" --with-ssl="${DEPS}" --with-random --with-ca-bundle="${DEST}/etc/ssl/certs/ca-certificates.crt" --enable-ipv6
+./configure --host="${HOST}" --prefix="${DEPS}" \
+  --libdir="${DEST}/lib" --disable-static \
+  --disable-debug --disable-curldebug \
+  --with-zlib="${DEPS}" --with-ssl="${DEPS}" --with-random \
+  --with-ca-bundle="${DEST}/etc/ssl/certs/ca-certificates.crt" --enable-ipv6
 make
 make install
 popd
@@ -61,7 +69,8 @@ local URL="https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/$
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-./configure --host="${HOST}" --prefix="${DEPS}" --libdir="${DEST}/lib" --disable-static
+./configure --host="${HOST}" --prefix="${DEPS}" \
+  --libdir="${DEST}/lib" --disable-static
 make
 make install
 popd
@@ -76,10 +85,13 @@ local URL="https://transmission.cachefly.net/${FILE}"
 
 _download_xz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-PKG_CONFIG_PATH="${DEST}/lib/pkgconfig" ./configure --host="${HOST}" --prefix="${DEST}" --disable-nls --enable-cli --enable-daemon --enable-utp --with-zlib="${DEPS}" 
+PKG_CONFIG_PATH="${DEST}/lib/pkgconfig" \
+  ./configure --host="${HOST}" --prefix="${DEST}" \
+  --disable-nls --enable-cli --enable-daemon --enable-utp \
+  --with-zlib="${DEPS}"
 make -j1
 make -j1 install
-mv -v "${DEST}/share/transmission/web" "${DEST}/www"
+mv -v "${DEST}/share/transmission/web" "${DEST}/app"
 popd
 }
 

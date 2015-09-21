@@ -1,0 +1,1 @@
+<p>There is a lot of free, legal content available over BitTorrent. For example, <a href="http://www.transmissionbt.com/content/" target="_new"><?php echo $appname; ?>&apos;s content page</a> is refreshed periodically with new media.</p>
