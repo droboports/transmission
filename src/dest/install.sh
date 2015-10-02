@@ -22,3 +22,6 @@ find "${prog_dir}" -type f -name "*.default" -print | while read deffile; do
     cp -vf "${deffile}" "${basefile}"
   fi
 done
+
+# install apache 2.x
+/usr/bin/DroboApps.sh install_version apache 2
