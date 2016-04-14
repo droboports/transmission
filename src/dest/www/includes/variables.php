@@ -1,7 +1,7 @@
-<?php 
+<?php
 $app = "transmission";
 $appname = "Transmission";
-$appversion = "2.84-2";
+$appversion = "2.92-1";
 $appsite = "http://www.transmissionbt.com/";
 $apphelp = "https://trac.transmissionbt.com/";
 

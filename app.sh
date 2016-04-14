@@ -18,7 +18,7 @@ _build_openssl() {
 local VERSION="1.0.2d"
 local FOLDER="openssl-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
-local URL="http://mirror.switch.ch/ftp/mirror/openssl/source/${FILE}"
+local URL="http://mirror.switch.ch/ftp/mirror/openssl/source/old/1.0.2/${FILE}"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 cp -vf "src/${FOLDER}-parallel-build.patch" "target/${FOLDER}/"
@@ -43,7 +43,7 @@ popd
 
 ### CURL ###
 _build_curl() {
-local VERSION="7.44.0"
+local VERSION="7.48.0"
 local FOLDER="curl-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://curl.haxx.se/download/${FILE}"
@@ -62,10 +62,10 @@ popd
 
 ### LIBEVENT ###
 _build_libevent() {
-local VERSION="2.0.22"
-local FOLDER="libevent-${VERSION}-stable"
+local VERSION="2.0.22-stable"
+local FOLDER="libevent-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
-local URL="https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/${FILE}"
+local URL="https://github.com/libevent/libevent/releases/download/release-${VERSION}/${FILE}"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
@@ -78,7 +78,7 @@ popd
 
 ### TRANSMISSION ###
 _build_transmission() {
-local VERSION="2.84"
+local VERSION="2.92"
 local FOLDER="transmission-${VERSION}"
 local FILE="${FOLDER}.tar.xz"
 local URL="https://transmission.cachefly.net/${FILE}"
