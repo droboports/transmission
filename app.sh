@@ -95,7 +95,6 @@ popd
 _build_transmission() {
 local APP="transmission"
 local VERSION="2.94"
-# local VERSION="3.00"
 local FOLDER="${APP}-${VERSION}"
 local FILE="${VERSION}.tar.gz"
 local URL="https://github.com/transmission/transmission/archive/${FILE}"

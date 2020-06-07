@@ -7,7 +7,7 @@
 
 framework_version="2.1"
 name="transmission"
-version="2.94-RP"
+version="2.94-drobo"
 description="A fast, easy, and free BitTorrent client"
 depends=""
 webui="WebUI"
